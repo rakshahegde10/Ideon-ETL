@@ -1,5 +1,6 @@
 import boto3
 import os
+import tarfile
 
 # create an S3 client object
 s3 = boto3.client('s3')
@@ -23,3 +24,7 @@ destination_path = os.path.join(data_set_path, 'providers.tar.gz')
 
 # download the file from S3 to the local destination path
 s3.download_file(bucket_name, file_path, destination_path)
+
+#Extracting the file
+with tarfile.open(f'{data_set_path}/providers.tar.gz', 'r:gz') as tar:
+    tar.extractall(f'{data_set_path}/')
