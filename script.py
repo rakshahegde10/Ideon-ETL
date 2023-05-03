@@ -1,6 +1,7 @@
 import boto3
 import os
 import tarfile
+import glob
 
 # create an S3 client object
 s3 = boto3.client('s3')
@@ -28,3 +29,10 @@ s3.download_file(bucket_name, file_path, destination_path)
 #Extracting the file
 with tarfile.open(f'{data_set_path}/providers.tar.gz', 'r:gz') as tar:
     tar.extractall(f'{data_set_path}/')
+
+
+#Moving the file
+for file_path in glob.glob(os.path.join(data_set_path, '*.jsonl')):
+    file_name = os.path.basename(file_path)
+    new_file_path = os.path.join(current_path, file_name)
+    os.rename(file_path, new_file_path)
